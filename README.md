@@ -12,6 +12,8 @@ An addon for the free open source 3d program Blender. This addon generates a pit
 * https://docs.blender.org/manual/en/latest/editors/preferences/addons.html
 * https://docs.blender.org/manual/en/dev/advanced/command_line/launch/macos.html
 
+* A guide about adding and manipulating objects in blender: https://docs.blender.org/api/current/bpy.ops.mesh.html
+
 
 ## Open Blender From the Terminal
 
