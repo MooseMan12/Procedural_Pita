@@ -11,6 +11,8 @@ An addon for the free open source 3d program Blender. This addon generates a pit
 * https://docs.blender.org/manual/en/latest/index.html
 * https://docs.blender.org/manual/en/latest/editors/preferences/addons.html
 * https://docs.blender.org/manual/en/dev/advanced/command_line/launch/macos.html
+* https://b3d.interplanety.org/en/appending-all-objects-from-the-external-blend-file-to-the-scene-with-blender-python-api/
+* 9
 
 * A guide about adding and manipulating objects in blender: https://docs.blender.org/api/current/bpy.ops.mesh.html
 
