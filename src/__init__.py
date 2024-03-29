@@ -9,17 +9,6 @@ bl_info = {
     "description": "creates a procedural pita and lets the user customize the pita and the toppings of said pita."
 }
 
-class PR_OT_startPita(bpy.types.Operator):
-    bl_idname = "scene.create_pita"
-    bl_label = "Make Pita"
-    bl_options = {'REGISTER', 'UNDO'}
-
-    def execute(self, context):
-        print("hello 3d world! I am a pita and I am procedural")
-        print(__file__)
-        return {'FINISHED'}
-
-
 class PitaToolshelfPanel(bpy.types.Panel):
     bl_label = "Procedural Pita"
     bl_idname = "OBJECT_PT_Procedural_Pita"
@@ -39,9 +28,15 @@ class PitaToolshelfPanel(bpy.types.Panel):
         col.operator("scene.create_pita", text="Make Pita!")
   
   
-classes = (PitaToolshelfPanel,PR_OT_startPita, )
+def register():
+    from src.ops.startPitaOp import PR_OT_startPita
+    bpy.utils.register_class(PitaToolshelfPanel)
+    bpy.utils.register_class(PR_OT_startPita)
 
-register, unregister = bpy.utils.register_classes_factory(classes)
+def unregister():
+    import src.ops
+    bpy.utils.unregister_class(PitaToolshelfPanel)
+    bpy.utils.unregister_class(PR_OT_startPita)
 
 if __name__ == "__main__":
     register()
