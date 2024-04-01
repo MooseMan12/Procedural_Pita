@@ -34,9 +34,9 @@ def register():
     bpy.utils.register_class(PR_OT_startPita)
 
 def unregister():
-    import src.ops
-    bpy.utils.unregister_class(PitaToolshelfPanel)
+    from src.ops.startPitaOp import PR_OT_startPita
     bpy.utils.unregister_class(PR_OT_startPita)
+    bpy.utils.unregister_class(PitaToolshelfPanel)
 
 if __name__ == "__main__":
     register()
