@@ -29,6 +29,7 @@ class PR_OT_startPita(bpy.types.Operator):
 
         for i in range(self.falafel_count):
             falafelObj_new = falafelObj.copy()
+            context.scene.collection.objects.link(falafelObj_new)
             falafelObj_new.location = falafelObj.location
         
         return {'FINISHED'}
