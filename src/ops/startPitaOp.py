@@ -9,7 +9,7 @@ class PR_OT_startPita(bpy.types.Operator):
     falafel_type: bpy.props.EnumProperty(items = (
         ('falafel', 'Falafel', 'a regular falafel'),
         ('burnt_falafel', 'Burnt Falafel', 'a burnt, slightly darker, falafel'),
-        ('raw_falafel', 'Raw Falafel', 'a more raw, lighter, falafel')
+        ('raw_falafel', 'Raw Falafel', 'a rawer, slightly lighter, falafel')
     ),
     name = "Falafel Type", description = 'here you can choose what kind of falafel you want: burnt, raw, or regular', default = 'falafel', options={'ANIMATABLE'}, override=set(), tags=set(), update=None, get=None, set=None)
     falafel_count: bpy.props.IntProperty(name = "falafel amount", default = 1, min = 0, max = 4)
