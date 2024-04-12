@@ -1,5 +1,7 @@
 import bpy
 import os
+import math
+from mathutils import Vector
 from pathlib import Path
 
 class PR_OT_startPita(bpy.types.Operator):
@@ -12,10 +14,22 @@ class PR_OT_startPita(bpy.types.Operator):
         ('raw_falafel', 'Raw Falafel', 'a rawer, slightly lighter, falafel')
     ),
     name = "Falafel Type", description = 'here you can choose what kind of falafel you want: burnt, raw, or regular', default = 'falafel', options={'ANIMATABLE'}, override=set(), tags=set(), update=None, get=None, set=None)
-    falafel_count: bpy.props.IntProperty(name = "falafel amount", default = 1, min = 0, max = 4)
+    falafel_count: bpy.props.IntProperty(name = "falafel amount", default = 1, min = 0, max = 7)
+
+    moveArr = [[0,0],[1,0],[1,-1],[-1,-1],[-1,0],[-1,1],[1,1]]
+
+    def falafelOffset(self, index, r):
+        move = self.moveArr[index]
+        offsetZ = move[1] * (math.sqrt(3) * r)
+        offsetX = 0
+        if move[1] ==0:
+            offsetX = move[0] * (2 * r)
+        else:
+            offsetX = move[0] * r
+        return Vector((offsetX,0,offsetZ))
 
     def execute(self, context):
-#        print("hello 3d world! I am a pita and I am procedural")
+        print("hello 3d world! I am a pita and I am procedural")
         modelspath = Path( os.path.join(__file__, "..", "..", "data", "models.blend") ).resolve()
         print(modelspath)
 
@@ -26,12 +40,13 @@ class PR_OT_startPita(bpy.types.Operator):
         if self.falafel_count != 0:
             bpy.context.scene.collection.objects.link(data_to.objects[0])
             falafelObj = data_to.objects[0]
+            falafelR = falafelObj.dimensions.x / 2
             falafelObj.location = context.scene.cursor.location
 
-        for i in range(self.falafel_count-1):
-            falafelObj_new = falafelObj.copy()
-            context.scene.collection.objects.link(falafelObj_new)
-            falafelObj_new.location = falafelObj.location
+            for i in range(self.falafel_count-1):
+                falafelObj_new = falafelObj.copy()
+                falafelObj_new.location = context.scene.cursor.location + self.falafelOffset(i+1, falafelR)
+                context.scene.collection.objects.link(falafelObj_new)
         
         return {'FINISHED'}
  

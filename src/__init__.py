@@ -24,7 +24,7 @@ class PitaToolshelfPanel(bpy.types.Panel):
         # Three buttons
         col = layout.column(align=True)
         col.separator()
-        col.label(text="hello 3d world")
+        col.label(text="Creation options")
         col.operator("scene.create_pita", text="Make Pita!")
   
   
