@@ -16,6 +16,7 @@ class PR_OT_startPita(bpy.types.Operator):
     ),
     name = "Falafel Type", description = 'here you can choose what kind of falafel you want: burnt, raw, or regular', default = 'falafel', options={'ANIMATABLE'}, override=set(), tags=set(), update=None, get=None, set=None)
     falafel_count: bpy.props.IntProperty(name = "falafel amount", default = 1, min = 0, max = 7)
+    tomato_amount: bpy.props.IntProperty(name = "tomato amount", default = 2, min = 0, max = 4)
 
     moveArr = [[0,0],[1,0],[1,-1],[-1,-1],[-1,0],[-1,1],[1,1]]
 
@@ -29,13 +30,17 @@ class PR_OT_startPita(bpy.types.Operator):
             offsetX = move[0] * r
         return Vector((offsetX,0,offsetZ))
 
+    def tomatoOffset(self, tomato_index, falafelR, tomatoHeight):
+        tomatoYOffset = falafelR + (tomatoHeight * 0.5)
+        return Vector((0,tomatoYOffset,0))
+
     def execute(self, context):
-        print("hello 3d world! I am a pita and I am procedural")
+#        print("hello 3d world! I am a pita and I am procedural")
         modelspath = Path( os.path.join(__file__, "..", "..", "data", "models.blend") ).resolve()
         print(modelspath)
 
         with bpy.data.libraries.load(str(modelspath)) as (data_from, data_to):
-            data_to.objects = [self.falafel_type]
+            data_to.objects = [self.falafel_type, 'tomato_1', 'tomato_2']
             print("objects are: ", data_to.objects)
         
         if self.falafel_count != 0:
@@ -50,6 +55,19 @@ class PR_OT_startPita(bpy.types.Operator):
                 falafelObj_new.location = context.scene.cursor.location + self.falafelOffset(i+1, falafelR)
                 falafelObj_new.rotation_euler = (random.randint(0,360),random.randint(0,360),random.randint(0,360))
                 context.scene.collection.objects.link(falafelObj_new)
+        
+
+        if self.tomato_amount != 0:
+            bpy.context.scene.collection.objects.link(data_to.objects[1])
+            TomatoObj = data_to.objects[1]
+            TomatoHeight = TomatoObj.dimensions.z
+            TomatoObj.location = context.scene.cursor.location + self.tomatoOffset(None, falafelR, TomatoHeight)
+            TomatoObj.rotation_euler = (0,math.pi*0.5,-(math.pi*0.5))
+
+            for i in range(self.tomato_amount-1):
+                tomatoObj_new = TomatoObj.copy()
+                tomatoObj_new.location = context.scene.cursor.location + self.tomatoOffset(None, falafelR, TomatoHeight)
+                context.scene.collection.objects.link(tomatoObj_new)
         
         return {'FINISHED'}
  
