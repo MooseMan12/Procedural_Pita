@@ -1,6 +1,7 @@
 import bpy
 import os
 import math
+import random
 from mathutils import Vector
 from pathlib import Path
 
@@ -42,10 +43,12 @@ class PR_OT_startPita(bpy.types.Operator):
             falafelObj = data_to.objects[0]
             falafelR = falafelObj.dimensions.x / 2
             falafelObj.location = context.scene.cursor.location
+            falafelObj.rotation_euler = (random.randint(0,360),random.randint(0,360),random.randint(0,360))
 
             for i in range(self.falafel_count-1):
                 falafelObj_new = falafelObj.copy()
                 falafelObj_new.location = context.scene.cursor.location + self.falafelOffset(i+1, falafelR)
+                falafelObj_new.rotation_euler = (random.randint(0,360),random.randint(0,360),random.randint(0,360))
                 context.scene.collection.objects.link(falafelObj_new)
         
         return {'FINISHED'}
