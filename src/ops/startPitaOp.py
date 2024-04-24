@@ -15,8 +15,8 @@ class PR_OT_startPita(bpy.types.Operator):
         ('raw_falafel', 'Raw Falafel', 'a rawer, slightly lighter, falafel')
     ),
     name = "Falafel Type", description = 'here you can choose what kind of falafel you want: burnt, raw, or regular', default = 'falafel', options={'ANIMATABLE'}, override=set(), tags=set(), update=None, get=None, set=None)
-    falafel_count: bpy.props.IntProperty(name = "falafel amount", default = 1, min = 0, max = 7)
-    tomato_amount: bpy.props.IntProperty(name = "tomato amount", default = 2, min = 0, max = 4)
+    falafel_count: bpy.props.IntProperty(name = "falafel amount", default = 7, min = 0, max = 7)
+    tomato_amount: bpy.props.IntProperty(name = "tomato amount", default = 4, min = 0, max = 4)
 
 #                       [x,z]
     falafelMoveArr = [[0,0],[1,0],[1,-1],[-1,-1],[-1,0],[-1,1],[1,1]]
