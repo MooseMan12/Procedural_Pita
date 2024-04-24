@@ -42,12 +42,14 @@ class PR_OT_startPita(bpy.types.Operator):
 
     def execute(self, context):
         modelspath = Path( os.path.join(__file__, "..", "..", "data", "models.blend") ).resolve()
-        print(modelspath)
+        #print(modelspath)
 
         with bpy.data.libraries.load(str(modelspath)) as (data_from, data_to):
             data_to.objects = [self.falafel_type, 'tomato_1', 'tomato_2']
-            print("objects are: ", data_to.objects)
-        
+            #print("objects are: ", data_to.objects)
+
+        falafelR = 0.2
+
         if self.falafel_count != 0:
             bpy.context.scene.collection.objects.link(data_to.objects[0])
             falafelObj = data_to.objects[0]
