@@ -18,7 +18,7 @@ class PR_OT_startPita(bpy.types.Operator):
     falafel_count: bpy.props.IntProperty(name = "falafel amount", default = 7, min = 0, max = 7)
     tomato_amount: bpy.props.IntProperty(name = "tomato amount", default = 4, min = 0, max = 4)
     tomato_distance: bpy.props.IntProperty(name = "distance of tomatoes from 3d cursor", default = 0.1, min = 0.01, max = 0.2)
-    # description = "this field applies only if there are 0 falafels. this number is the distance of the tomatos from the 3d cursor if there are no falafels. if there are falafels, this field does not apply and will do nothing",
+
 
 #                       [x,z]
     falafelMoveArr = [[0,0],[1,0],[1,-1],[-1,-1],[-1,0],[-1,1],[1,1]]
@@ -49,6 +49,8 @@ class PR_OT_startPita(bpy.types.Operator):
         tomatoZOffset = 0.4 * tomato_move[2]
         return Vector((tomatoXOffset,tomatoYOffset,tomatoZOffset))
 
+#_______________________________________________________________________________________________
+
     def execute(self, context):
         modelspath = Path( os.path.join(__file__, "..", "..", "data", "models.blend") ).resolve()
         #print(modelspath)
@@ -57,7 +59,7 @@ class PR_OT_startPita(bpy.types.Operator):
             data_to.objects = [self.falafel_type, 'tomato_1', 'tomato_2']
             #print("objects are: ", data_to.objects)
 
-        falafelR = 0.2
+        falafelR = 0.4 #self.tomato_distance
 
         if self.falafel_count != 0:
             bpy.context.scene.collection.objects.link(data_to.objects[0])

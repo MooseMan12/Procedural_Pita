@@ -18,10 +18,8 @@ class PitaToolshelfPanel(bpy.types.Panel):
 
     def draw(self, context):
 
-        # column buttons solution. Less space than single buttons ...
         layout = self.layout
         view = context.space_data
-        # Three buttons
         col = layout.column(align=True)
         col.separator()
 #        col.label(text="Creation options")
