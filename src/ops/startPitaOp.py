@@ -10,13 +10,15 @@ class PR_OT_startPita(bpy.types.Operator):
     bl_label = "Make Pita"
     bl_options = {'REGISTER', 'UNDO'}
     falafel_type: bpy.props.EnumProperty(items = (
-        ('falafel', 'Falafel', 'a regular falafel'),
+        ('falafel', 'Regular Falafel', 'a regular falafel'),
         ('burnt_falafel', 'Burnt Falafel', 'a burnt, slightly darker, falafel'),
         ('raw_falafel', 'Raw Falafel', 'a rawer, slightly lighter, falafel')
     ),
     name = "Falafel Type", description = 'here you can choose what kind of falafel you want: burnt, raw, or regular', default = 'falafel', options={'ANIMATABLE'}, override=set(), tags=set(), update=None, get=None, set=None)
     falafel_count: bpy.props.IntProperty(name = "falafel amount", default = 7, min = 0, max = 7)
     tomato_amount: bpy.props.IntProperty(name = "tomato amount", default = 4, min = 0, max = 4)
+    tomato_distance: bpy.props.IntProperty(name = "distance of tomatoes from 3d cursor", default = 0.1, min = 0.01, max = 0.2)
+    # description = "this field applies only if there are 0 falafels. this number is the distance of the tomatos from the 3d cursor if there are no falafels. if there are falafels, this field does not apply and will do nothing",
 
 #                       [x,z]
     falafelMoveArr = [[0,0],[1,0],[1,-1],[-1,-1],[-1,0],[-1,1],[1,1]]
@@ -38,6 +40,13 @@ class PR_OT_startPita(bpy.types.Operator):
         tomatoXOffset = r * tomato_move[0]
         tomatoYOffset = (r + (tomatoHeight * 0.5)) * tomato_move[1]
         tomatoZOffset = r * tomato_move[2]
+        return Vector((tomatoXOffset,tomatoYOffset,tomatoZOffset))
+    
+    def tomatoOffsetFor0(self, tomato_index, r, tomatoHeight):
+        tomato_move = self.tomatoMoveArr[tomato_index]
+        tomatoXOffset = 0.4 * tomato_move[0]
+        tomatoYOffset = (r + (tomatoHeight * 0.5)) * tomato_move[1]
+        tomatoZOffset = 0.4 * tomato_move[2]
         return Vector((tomatoXOffset,tomatoYOffset,tomatoZOffset))
 
     def execute(self, context):
@@ -68,12 +77,18 @@ class PR_OT_startPita(bpy.types.Operator):
             bpy.context.scene.collection.objects.link(data_to.objects[1])
             TomatoObj = data_to.objects[1]
             TomatoHeight = TomatoObj.dimensions.z
-            TomatoObj.location = context.scene.cursor.location + self.tomatoOffset(0, falafelR, TomatoHeight)
+            if self.falafel_count != 0:
+                TomatoObj.location = context.scene.cursor.location + self.tomatoOffset(0, falafelR, TomatoHeight)
+            else:
+                TomatoObj.location = context.scene.cursor.location + self.tomatoOffsetFor0(0, falafelR, TomatoHeight)
             TomatoObj.rotation_euler = (0,math.pi*0.5,-(math.pi*0.5))
 
             for i in range(self.tomato_amount-1):
                 tomatoObj_new = TomatoObj.copy()
-                tomatoObj_new.location = context.scene.cursor.location + self.tomatoOffset(i+1, falafelR, TomatoHeight)
+                if self.falafel_count != 0:
+                    tomatoObj_new.location = context.scene.cursor.location + self.tomatoOffset(i+1, falafelR, TomatoHeight)
+                else:
+                    tomatoObj_new.location = context.scene.cursor.location + self.tomatoOffsetFor0(0, falafelR, TomatoHeight)
                 context.scene.collection.objects.link(tomatoObj_new)
         
         return {'FINISHED'}
